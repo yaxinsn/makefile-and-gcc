@@ -41,17 +41,17 @@ void pthread_set_name(char* name)
 */
 void sig_handler(int sig)
 {
-   printf("%d Deal  %d\n",pthread_get_pid(),sig);  //SIGINT信号处理函数
+   printf("sig_handler %d Deal  %d\n",pthread_get_pid(),sig);  //SIGINT信号处理函数
 }
  void sig_handler22(int sig)
 {
-   printf("%d Deal  %d\n",pthread_get_pid(),sig);  //SIGINT信号处理函数
+   printf("sig_handler22 %d Deal  %d\n",pthread_get_pid(),sig);  //SIGINT信号处理函数
 }
 
 int sig_init_act22()
 {
 	struct sigaction act;
-   	act.sa_handler=sig_handler;
+   	act.sa_handler=sig_handler22;
    	sigemptyset(&act.sa_mask);
    	act.sa_flags=0;
    	sigaction(SIGABRT,&act,0);//设置信号SIGUSR1的处理方式忽略
@@ -80,9 +80,8 @@ void *threadfunc1(void *pvoid)
 	printf("%s: pid %d enter\n",__func__,pthread_get_pid());
 	sig_init_act();
 	sleep(20);
-	printf("%s: pid %d act abrt \n",__func__,pthread_get_pid());
-	sig_init_act();
-	printf("%s: pid %d\n",__func__,getpid());
+	printf("%s: pid %d act abrt and goto sleep  \n",__func__,pthread_get_pid());
+
 	while(1)
 	{
 		sleep(10);
@@ -94,7 +93,7 @@ void *threadfunc2(void *pvoid)
 	printf("%s: pid %d enter\n",__func__,pthread_get_pid());
 	sig_init_act22();
 	sleep(20);
-	printf("%s: pid %d act abrt \n",__func__,pthread_get_pid());
+	printf("%s: pid %d act abrt and goto sleep \n",__func__,pthread_get_pid());
 	while(1)
 	{
 		sleep(10);
@@ -106,12 +105,13 @@ void main()
 {
 	int i;
 	pthread_t thread1,thread2;
-	sig_init_ign();
+	//sig_init_ign();
 	
     sleep(10);
     printf("create thread1\n");
     pthread_create(&thread1,NULL,threadfunc1,(void *)NULL);
-    sleep(10);
+    sleep(10);/* 一旦有信号发给进程时，sleep会被打断， */
+    printf("create thread2:\n");
     pthread_create(&thread2,NULL,threadfunc2,(void *)NULL);
   
     pthread_detach(thread1);
