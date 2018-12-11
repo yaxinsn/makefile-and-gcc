@@ -1,0 +1,14 @@
+
+
+
+./acsmx abc123abc abc
+MatchFound:757 index 0
+abc
+MatchFound:757 index 6
+abc
+normal pgm end
+
+在MatchFound里的入参index的意思是当前关键字在文章中的位置
+如关键字abc是文章abc123abc中的位置分别是0,和6.
+
+MatchFound里的data是从acsmSearch里的data传入的。传入MatchFound以后，data里的字符串可以与id里的数据进行比较。或是把一些关键信息通过data里的子指针返回回去。
