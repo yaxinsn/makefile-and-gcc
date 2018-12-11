@@ -1,0 +1,13 @@
+
+
+
+./acsmx abc123abc abc
+MatchFound:757 index 0
+abc
+MatchFound:757 index 6
+abc
+normal pgm end
+
+在MatchFound里的入参index的意思是当前关键字在文章中的位置
+如关键字abc是文章abc123abc中的位置分别是0,和6.
+
